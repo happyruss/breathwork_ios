@@ -109,9 +109,10 @@ class Track {
         
     }
     
+    //Seamless loop workaround for < iOS 10
     @objc func playerItemDidReachEnd(notification: Notification) {
         if let playerItem = notification.object as? AVPlayerItem {
-            playerItem.seek(to: CMTimeMake(value:5, timescale:100))
+            playerItem.seek(to: CMTimeMake(value:10, timescale:100))
         }
     }
     
@@ -129,7 +130,7 @@ class Track {
         }
 
         if (isTimerOnly) {
-            self.breathPlayer?.rate = breathSpeed
+            setBreathSpeed(self.breathSpeed)
             return
         }
         
