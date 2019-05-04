@@ -163,7 +163,7 @@
                                     <action selector="didChangeBreathVolume:" destination="mzx-qC-83o" eventType="valueChanged" id="O3K-Op-3Go"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Breath Speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G24-Ud-YiS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breath Speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G24-Ud-YiS">
                                 <rect key="frame" x="131" y="121" width="113" height="21"/>
                                 <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -175,8 +175,8 @@
                                     <action selector="didChangeBreathSpeed:" destination="mzx-qC-83o" eventType="valueChanged" id="S1S-kV-P8F"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Voice Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuQ-AJ-dL6">
-                                <rect key="frame" x="126" y="172" width="122.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Voice Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuQ-AJ-dL6">
+                                <rect key="frame" x="131.5" y="172" width="112.5" height="21"/>
                                 <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -187,8 +187,8 @@
                                     <action selector="didChangeVoiceVolume:" destination="mzx-qC-83o" eventType="valueChanged" id="Osa-ge-69D"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Ambiance Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E1M-Ko-dPc" userLabel="Ambiance Volume">
-                                <rect key="frame" x="126" y="223" width="122.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ambiance Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E1M-Ko-dPc" userLabel="Ambiance Volume">
+                                <rect key="frame" x="113" y="223" width="149.5" height="21"/>
                                 <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -227,14 +227,17 @@
                             <constraint firstItem="qXI-Uc-edV" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="U7q-B1-C2v"/>
                             <constraint firstItem="G24-Ud-YiS" firstAttribute="top" secondItem="qXI-Uc-edV" secondAttribute="bottom" id="UFd-JB-sk3"/>
                             <constraint firstItem="gJe-Le-qHR" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="V5b-B0-fyY"/>
+                            <constraint firstItem="G24-Ud-YiS" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="VNJ-Ou-bOG"/>
                             <constraint firstItem="NLJ-Cx-AjG" firstAttribute="top" secondItem="gJe-Le-qHR" secondAttribute="bottom" constant="5" id="Wcm-Ct-Rue"/>
                             <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="GeB-Wu-iSR" secondAttribute="trailing" constant="20" id="X1v-gY-oxS"/>
                             <constraint firstItem="NLJ-Cx-AjG" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="XCg-Ai-sUw"/>
                             <constraint firstItem="gJe-Le-qHR" firstAttribute="top" secondItem="GeB-Wu-iSR" secondAttribute="bottom" constant="75" id="aKG-np-Atz"/>
                             <constraint firstItem="hK7-wP-1my" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="dC7-f1-3Gy"/>
                             <constraint firstItem="NKS-IC-l4D" firstAttribute="centerY" secondItem="IRK-Xr-hFw" secondAttribute="centerY" id="e3O-N8-lZm"/>
+                            <constraint firstItem="E1M-Ko-dPc" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="eIV-jf-Dxn"/>
                             <constraint firstItem="Oih-62-s1u" firstAttribute="top" secondItem="G24-Ud-YiS" secondAttribute="bottom" id="gFr-5Z-02U"/>
                             <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="qXI-Uc-edV" secondAttribute="trailing" constant="10" id="gLV-IK-WrN"/>
+                            <constraint firstItem="RuQ-AJ-dL6" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="lTN-p3-I0Q"/>
                             <constraint firstItem="hK7-wP-1my" firstAttribute="top" secondItem="E1M-Ko-dPc" secondAttribute="bottom" id="pnb-Ag-rvz"/>
                             <constraint firstItem="NKS-IC-l4D" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="q42-i9-4cq"/>
                             <constraint firstItem="PYv-zc-Ykt" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="rNe-k0-R3P"/>
