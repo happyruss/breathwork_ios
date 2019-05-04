@@ -25,6 +25,10 @@ class BreathworkManager {
         let savedCustomMeditationDurationMinutes = defaults.integer(forKey: "SavedCustomMeditationDurationMinutes")
         defaults.setValue(savedCustomMeditationDurationMinutes, forKey: "SavedCustomMeditationDurationMinutes")
         self.user.customMeditationDurationMinutes = savedCustomMeditationDurationMinutes
+        self.user.savedBreathVolume = (defaults.value(forKey: "savedBreathVolume") != nil) ? defaults.float(forKey: "savedBreathVolume") : 0.5
+        self.user.savedBreathSpeed = (defaults.value(forKey: "savedBreathSpeed") != nil) ? defaults.float(forKey: "savedBreathSpeed") : 0.5
+        self.user.savedVoiceVolume = (defaults.value(forKey: "savedVoiceVolume") != nil) ? defaults.float(forKey: "savedVoiceVolume") : 0.5
+        self.user.savedMusicVolume = (defaults.value(forKey: "savedMusicVolume") != nil) ? defaults.float(forKey: "savedMusicVolume") : 0.5
     }
     
     public func playTrackAtLevel(trackLevel: Int, noVoiceDurationSeconds: Int?) {
@@ -35,7 +39,7 @@ class BreathworkManager {
         }
         self.activeTrackLevel = trackLevel
         let trackTemplate = trackTemplateFactory.trackTemplates[trackLevel]
-        self.activeTrack = Track(trackTemplate: trackTemplate, noVoiceDurationSeconds: noVoiceDurationSeconds)
+        self.activeTrack = Track(trackTemplate: trackTemplate, noVoiceDurationSeconds: noVoiceDurationSeconds, breathVolume: self.user.savedBreathVolume, breathSpeed: self.user.savedBreathSpeed, voiceVolume: self.user.savedVoiceVolume, musicVolume: self.user.savedMusicVolume)
         self.activeTrack!.playFromBeginning()
     }
     
@@ -54,15 +58,10 @@ class BreathworkManager {
         activeTrack = nil
     }
     
-    private func setTrackCompletetion() {
-    }
-
     public func userStartedTrack() {
-        self.setTrackCompletetion()
     }
 
     public func userCompletedTrack() {
-        self.setTrackCompletetion()
     }
     
     public func setDefaultDurationMinutes(durationMinutes: Int) {
@@ -75,4 +74,27 @@ class BreathworkManager {
         defaults.setValue(self.user.totalSecondsInMeditation, forKey: "TotalSecondsInMeditation")
     }
     
+    public func setDefaultBreathVolume(breathVolume: Float) {
+        defaults.setValue(breathVolume, forKey: "savedBreathVolume")
+        self.user.savedBreathVolume = breathVolume
+        activeTrack?.setBreathVolume(breathVolume)
+    }
+
+    public func setDefaultBreathSpeed(breathSpeed: Float) {
+        defaults.setValue(breathSpeed, forKey: "savedBreathSpeed")
+        self.user.savedBreathSpeed = breathSpeed
+        activeTrack?.setBreathSpeed(breathSpeed)
+    }
+
+    public func setDefaultVoiceVolume(voiceVolume: Float) {
+        defaults.setValue(voiceVolume, forKey: "savedVoiceVolume")
+        self.user.savedVoiceVolume = voiceVolume
+        activeTrack?.setVoiceVolume(voiceVolume)
+    }
+
+    public func setDefaultMusicVolume(musicVolume: Float) {
+        defaults.setValue(musicVolume, forKey: "savedMusicVolume")
+        self.user.savedMusicVolume = musicVolume
+        activeTrack?.setMusicVolume(musicVolume)
+    }
 }

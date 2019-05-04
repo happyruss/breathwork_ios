@@ -151,6 +151,54 @@
                                     <action selector="didTapBackButton:" destination="mzx-qC-83o" eventType="touchUpInside" id="Hcg-1z-4LY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breath Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYv-zc-Ykt" userLabel="Breath Volume">
+                                <rect key="frame" x="126.5" y="70" width="122.5" height="21"/>
+                                <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="qXI-Uc-edV" userLabel="Breath Volume Slider">
+                                <rect key="frame" x="8" y="91" width="359" height="31"/>
+                                <connections>
+                                    <action selector="didChangeBreathVolume:" destination="mzx-qC-83o" eventType="valueChanged" id="O3K-Op-3Go"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Breath Speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G24-Ud-YiS">
+                                <rect key="frame" x="131" y="121" width="113" height="21"/>
+                                <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Oih-62-s1u" userLabel="Breath Speed Slider">
+                                <rect key="frame" x="8" y="142" width="359" height="31"/>
+                                <connections>
+                                    <action selector="didChangeBreathSpeed:" destination="mzx-qC-83o" eventType="valueChanged" id="S1S-kV-P8F"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Voice Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuQ-AJ-dL6">
+                                <rect key="frame" x="126" y="172" width="122.5" height="21"/>
+                                <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pg9-Uy-rZs" userLabel="Voice Volume Slider">
+                                <rect key="frame" x="8" y="193" width="359" height="31"/>
+                                <connections>
+                                    <action selector="didChangeVoiceVolume:" destination="mzx-qC-83o" eventType="valueChanged" id="Osa-ge-69D"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Ambiance Volume" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E1M-Ko-dPc" userLabel="Ambiance Volume">
+                                <rect key="frame" x="126" y="223" width="122.5" height="21"/>
+                                <fontDescription key="fontDescription" name="SFProText-Semibold" family="SF Pro Text" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hK7-wP-1my" userLabel="Ambiance Volume Slider">
+                                <rect key="frame" x="8" y="244" width="359" height="31"/>
+                                <connections>
+                                    <action selector="didChangeMusicVolume:" destination="mzx-qC-83o" eventType="valueChanged" id="IQs-7i-0So"/>
+                                </connections>
+                            </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gJe-Le-qHR">
                                 <rect key="frame" x="137.5" y="431" width="100" height="100"/>
                                 <state key="normal" image="pause"/>
@@ -163,28 +211,56 @@
                         <constraints>
                             <constraint firstItem="GeB-Wu-iSR" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="20" id="0WG-Q2-aMQ"/>
                             <constraint firstItem="3LO-sK-Duk" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="20" id="1AB-Iq-Ec2"/>
+                            <constraint firstItem="PYv-zc-Ykt" firstAttribute="top" secondItem="3LO-sK-Duk" secondAttribute="bottom" id="1IC-iX-JAN"/>
                             <constraint firstItem="y37-OE-5YA" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="-220" id="1iZ-hH-8S2"/>
+                            <constraint firstItem="Pg9-Uy-rZs" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="48u-ds-Cns"/>
+                            <constraint firstItem="qXI-Uc-edV" firstAttribute="top" secondItem="PYv-zc-Ykt" secondAttribute="bottom" id="6LO-OB-jeV"/>
                             <constraint firstItem="GeB-Wu-iSR" firstAttribute="centerY" secondItem="IRK-Xr-hFw" secondAttribute="centerY" id="77V-fF-hu0"/>
+                            <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="qXI-Uc-edV" secondAttribute="trailing" constant="10" id="DfU-Pe-B9r"/>
+                            <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="Pg9-Uy-rZs" secondAttribute="trailing" constant="10" id="IE5-pG-PEC"/>
+                            <constraint firstItem="RuQ-AJ-dL6" firstAttribute="top" secondItem="Oih-62-s1u" secondAttribute="bottom" id="Ojs-7E-hEq"/>
+                            <constraint firstItem="Oih-62-s1u" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="Ooc-qc-57C"/>
+                            <constraint firstItem="qXI-Uc-edV" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="PM9-Yv-lkV"/>
+                            <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="hK7-wP-1my" secondAttribute="trailing" constant="10" id="RlE-48-NHT"/>
+                            <constraint firstItem="qXI-Uc-edV" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="SM6-Pm-jta"/>
                             <constraint firstItem="3LO-sK-Duk" firstAttribute="top" secondItem="RDa-Hv-9TV" secondAttribute="top" constant="20" id="TRj-fF-3p8"/>
+                            <constraint firstItem="qXI-Uc-edV" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="U7q-B1-C2v"/>
+                            <constraint firstItem="G24-Ud-YiS" firstAttribute="top" secondItem="qXI-Uc-edV" secondAttribute="bottom" id="UFd-JB-sk3"/>
                             <constraint firstItem="gJe-Le-qHR" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="V5b-B0-fyY"/>
                             <constraint firstItem="NLJ-Cx-AjG" firstAttribute="top" secondItem="gJe-Le-qHR" secondAttribute="bottom" constant="5" id="Wcm-Ct-Rue"/>
                             <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="GeB-Wu-iSR" secondAttribute="trailing" constant="20" id="X1v-gY-oxS"/>
                             <constraint firstItem="NLJ-Cx-AjG" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="XCg-Ai-sUw"/>
                             <constraint firstItem="gJe-Le-qHR" firstAttribute="top" secondItem="GeB-Wu-iSR" secondAttribute="bottom" constant="75" id="aKG-np-Atz"/>
+                            <constraint firstItem="hK7-wP-1my" firstAttribute="leading" secondItem="RDa-Hv-9TV" secondAttribute="leading" constant="10" id="dC7-f1-3Gy"/>
                             <constraint firstItem="NKS-IC-l4D" firstAttribute="centerY" secondItem="IRK-Xr-hFw" secondAttribute="centerY" id="e3O-N8-lZm"/>
+                            <constraint firstItem="Oih-62-s1u" firstAttribute="top" secondItem="G24-Ud-YiS" secondAttribute="bottom" id="gFr-5Z-02U"/>
+                            <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="qXI-Uc-edV" secondAttribute="trailing" constant="10" id="gLV-IK-WrN"/>
+                            <constraint firstItem="hK7-wP-1my" firstAttribute="top" secondItem="E1M-Ko-dPc" secondAttribute="bottom" id="pnb-Ag-rvz"/>
                             <constraint firstItem="NKS-IC-l4D" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="q42-i9-4cq"/>
+                            <constraint firstItem="PYv-zc-Ykt" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="rNe-k0-R3P"/>
+                            <constraint firstItem="Pg9-Uy-rZs" firstAttribute="top" secondItem="RuQ-AJ-dL6" secondAttribute="bottom" id="uKd-eC-5bc"/>
                             <constraint firstItem="y37-OE-5YA" firstAttribute="trailing" secondItem="RDa-Hv-9TV" secondAttribute="trailing" id="uwM-vz-Y7W"/>
                             <constraint firstItem="GeB-Wu-iSR" firstAttribute="centerX" secondItem="IRK-Xr-hFw" secondAttribute="centerX" id="vBr-PF-zim"/>
                             <constraint firstItem="y37-OE-5YA" firstAttribute="bottom" secondItem="RDa-Hv-9TV" secondAttribute="bottom" id="wDo-9s-mIg"/>
+                            <constraint firstItem="RDa-Hv-9TV" firstAttribute="trailing" secondItem="Oih-62-s1u" secondAttribute="trailing" constant="10" id="wTw-A2-X2Y"/>
+                            <constraint firstItem="E1M-Ko-dPc" firstAttribute="top" secondItem="Pg9-Uy-rZs" secondAttribute="bottom" id="yXN-Ot-UOs"/>
                             <constraint firstItem="y37-OE-5YA" firstAttribute="top" secondItem="RDa-Hv-9TV" secondAttribute="top" id="ycl-w2-ifd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RDa-Hv-9TV"/>
                     </view>
                     <connections>
                         <outlet property="backButton" destination="3LO-sK-Duk" id="6sN-cu-9zL"/>
+                        <outlet property="breathSpeedLabel" destination="G24-Ud-YiS" id="m4l-mS-OR7"/>
+                        <outlet property="breathSpeedSlider" destination="Oih-62-s1u" id="U65-ld-QEa"/>
+                        <outlet property="breathVolumeLabel" destination="PYv-zc-Ykt" id="8CR-Sc-ORp"/>
+                        <outlet property="breathVolumeSlider" destination="qXI-Uc-edV" id="R0e-AP-Jtj"/>
                         <outlet property="countdownLabel" destination="NLJ-Cx-AjG" id="epd-fP-A4g"/>
                         <outlet property="meditationNameLabel" destination="GeB-Wu-iSR" id="Cit-GD-x4L"/>
+                        <outlet property="musicVolumeLabel" destination="E1M-Ko-dPc" id="3Zh-CN-KVR"/>
+                        <outlet property="musicVolumeSlider" destination="hK7-wP-1my" id="VfS-Vq-gZU"/>
                         <outlet property="playPauseButton" destination="gJe-Le-qHR" id="sVd-29-VXq"/>
+                        <outlet property="voiceVolumeLabel" destination="RuQ-AJ-dL6" id="5Uc-gj-J2Y"/>
+                        <outlet property="voiceVolumeSlider" destination="Pg9-Uy-rZs" id="TBh-LI-Efs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2bR-iD-bUR" userLabel="First Responder" sceneMemberID="firstResponder"/>

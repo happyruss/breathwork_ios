@@ -33,10 +33,13 @@ class Track {
     fileprivate let isTimerOnly: Bool
     fileprivate let isIntroduction: Bool
     
+    fileprivate var breathSpeed: Float = 1.0
+    
     weak var delegate: TrackDelegate?
     
-    init(trackTemplate: TrackTemplate, noVoiceDurationSeconds: Int?) {
+    init(trackTemplate: TrackTemplate, noVoiceDurationSeconds: Int?, breathVolume: Float, breathSpeed: Float, voiceVolume: Float, musicVolume: Float) {
         self.trackTemplate = trackTemplate
+        self.breathSpeed = breathSpeed
         
         //initialize the audio files
         let assetKeys = [
@@ -90,11 +93,20 @@ class Track {
                                                        name: .AVPlayerItemDidPlayToEndTime,
                                                        object: self.breathPlayer!.currentItem)
             }
+            setBreathVolume(breathVolume)
         } else {
             self.breathItem = nil
             self.breathPlayer = nil
             isIntroduction = true
         }
+        
+        if (trackTemplate.voiceAsset != nil) {
+            setVoiceVolume(voiceVolume)
+        }
+        if (trackTemplate.musicAsset != nil) {
+            setMusicVolume(musicVolume)
+        }
+        
     }
     
     @objc func playerItemDidReachEnd(notification: Notification) {
@@ -117,7 +129,7 @@ class Track {
         }
 
         if (isTimerOnly) {
-            self.breathPlayer!.play()
+            self.breathPlayer?.rate = breathSpeed
             return
         }
         
@@ -129,13 +141,7 @@ class Track {
         // assume all 3 pieces are not null
         self.voicePlayer!.play()
         self.musicPlayer!.play()
-
-        let currentPosition = self.totalDuration - self.remainingTime
-        if (currentPosition > trackTemplate.breathStartSeconds! && currentPosition < trackTemplate.breathStopSeconds!) {
-            self.breathPlayer!.play()
-        } else {
-            self.breathPlayer!.pause()
-        }
+        setBreathSpeed(self.breathSpeed)
     }
     
     fileprivate func setupAudio() {
@@ -203,4 +209,29 @@ class Track {
         }
     }
     
+    public func setBreathVolume(_ value:Float) {
+        breathPlayer?.volume = value
+    }
+    public func setBreathSpeed(_ value:Float) {
+        breathSpeed = value
+        let currentPosition = self.totalDuration - self.remainingTime
+        var shouldBePlaying = isTimerOnly
+        if (!isTimerOnly) {
+            shouldBePlaying = currentPosition > trackTemplate.breathStartSeconds! && currentPosition < trackTemplate.breathStopSeconds!
+        }
+        if (shouldBePlaying) {
+            //      formula to convert scale
+            //      ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow;
+            let proposedBreathSpeed = ((value - 0.0) / (1.0 - 0.0)) * (1.25 - 0.75) + 0.75
+            self.breathPlayer!.rate = proposedBreathSpeed
+        } else {
+            self.breathPlayer!.rate = 0
+        }
+    }
+    public func setMusicVolume(_ value:Float) {
+        musicPlayer?.volume = value
+    }
+    public func setVoiceVolume(_ value:Float) {
+        voicePlayer?.volume = value
+    }
 }

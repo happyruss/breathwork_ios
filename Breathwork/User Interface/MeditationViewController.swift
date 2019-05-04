@@ -13,9 +13,16 @@ class MeditationViewController: UIViewController, TrackDelegate {
     let breathworkManager = BreathworkManager.shared
     let trackTemplateFactory = TrackTemplateFactory.shared
     
-    
-    
-    @IBOutlet weak var appNameLabel: UILabel!
+    @IBOutlet weak var breathVolumeSlider: UISlider!
+    @IBOutlet weak var breathSpeedSlider: UISlider!
+    @IBOutlet weak var musicVolumeSlider: UISlider!
+    @IBOutlet weak var voiceVolumeSlider: UISlider!
+
+    @IBOutlet weak var breathVolumeLabel: UILabel!
+    @IBOutlet weak var breathSpeedLabel: UILabel!
+    @IBOutlet weak var musicVolumeLabel: UILabel!
+    @IBOutlet weak var voiceVolumeLabel: UILabel!
+
     @IBOutlet weak var countdownLabel: UILabel!
     @IBOutlet weak var meditationNameLabel: UILabel!
     @IBOutlet weak var playPauseButton: UIButton!
@@ -28,10 +35,30 @@ class MeditationViewController: UIViewController, TrackDelegate {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+
+    @IBAction func didChangeMusicVolume(_ sender: Any) {
+        breathworkManager.setDefaultMusicVolume(musicVolume: (sender as! UISlider).value)
+    }
+    
+    @IBAction func didChangeVoiceVolume(_ sender: Any) {
+        breathworkManager.setDefaultVoiceVolume(voiceVolume: (sender as! UISlider).value)
+    }
+    
+    @IBAction func didChangeBreathSpeed(_ sender: Any) {
+        breathworkManager.setDefaultBreathSpeed(breathSpeed: (sender as! UISlider).value)
+    }
+    
+    @IBAction func didChangeBreathVolume(_ sender: Any) {
+        breathworkManager.setDefaultBreathVolume(breathVolume: (sender as! UISlider).value)
+    }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        playPauseButton.isHidden = true
+      super.viewDidLoad()
+      playPauseButton.isHidden = true
+      self.breathVolumeSlider.setValue(breathworkManager.user.savedBreathVolume, animated: true)
+      self.breathSpeedSlider.setValue(breathworkManager.user.savedBreathSpeed, animated: true)
+      self.musicVolumeSlider.setValue(breathworkManager.user.savedMusicVolume, animated: true)
+      self.voiceVolumeSlider.setValue(breathworkManager.user.savedVoiceVolume, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,6 +69,37 @@ class MeditationViewController: UIViewController, TrackDelegate {
     func runMeditation(trackLevel: Int, noVoiceDurationSeconds: Int?) {
         let trackTemplate = breathworkManager.trackTemplateFactory.trackTemplates[trackLevel]
         meditationNameLabel.text = trackTemplate.name
+        let isActiveTrackIntroduction = trackTemplate.name == "Introduction"
+        let isActiveTrackTimer = trackTemplate.name == "Timer"
+        
+        if (isActiveTrackIntroduction || isActiveTrackTimer) {
+            musicVolumeSlider.isHidden = true
+            musicVolumeLabel.isHidden = true
+        } else {
+            musicVolumeSlider.isHidden = false
+            musicVolumeLabel.isHidden = false
+        }
+        
+        if (isActiveTrackTimer) {
+            voiceVolumeSlider.isHidden = true
+            voiceVolumeLabel.isHidden = true
+        } else {
+            voiceVolumeSlider.isHidden = false
+            voiceVolumeLabel.isHidden = false
+        }
+        
+        if (isActiveTrackIntroduction) {
+            breathSpeedSlider.isHidden = true
+            breathSpeedLabel.isHidden = true
+            breathVolumeSlider.isHidden = true
+            breathVolumeLabel.isHidden = true
+        } else {
+            breathSpeedSlider.isHidden = false
+            breathSpeedLabel.isHidden = false
+            breathVolumeSlider.isHidden = false
+            breathVolumeLabel.isHidden = false
+        }
+        
         breathworkManager.playTrackAtLevel(trackLevel: trackLevel, noVoiceDurationSeconds: noVoiceDurationSeconds)
         breathworkManager.activeTrack?.delegate = self
         playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: UIControl.State.normal)
