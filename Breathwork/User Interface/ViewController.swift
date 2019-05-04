@@ -31,17 +31,9 @@ class ViewController: UIViewController {
             let trackTemplate = trackTemplateFactory.trackTemplates[i]
             let button = BreathworkButton()
             button.tag = i
-            button.setTitle(trackTemplate.shortName, for: .normal)
+            button.setTitle(trackTemplate.name, for: .normal)
             button.addTarget(self, action: #selector(self.didTapMeditationButton(_:)), for: .touchUpInside)
             stackView.addArrangedSubview(button)
-            if (i < trackCount - 1) {
-                let dots = UIImageView()
-                dots.contentMode = .scaleAspectFit
-                dots.tag = i + 100
-                dots.image = #imageLiteral(resourceName: "dots")
-                dots.sizeToFit()
-                stackView.addArrangedSubview(dots)
-            }
             button.sizeToFit()
             
             if i == 1 {
@@ -84,8 +76,6 @@ class ViewController: UIViewController {
     }
     
     func secureButtons() {
-        let enabledLevel = breathworkManager.user.completedTrackLevel + 1
-        let alwaysEnable = !trackTemplateFactory.requireMeditationsBeDoneInOrder
         let totalTrackCount = trackTemplateFactory.trackTemplates.count
         
         timerButton.isEnabled = true
@@ -93,24 +83,11 @@ class ViewController: UIViewController {
         var contentOffset = CGPoint(x:0, y:0)
 
         for i in 1...totalTrackCount - 1 {
-            let isNotLastTrack = i < totalTrackCount - 1
             let button = view.viewWithTag(i) as! UIButton
-            button.isEnabled = alwaysEnable || enabledLevel > i - 1
-            if isNotLastTrack {
-                let dots = view.viewWithTag(i + 100) as! UIImageView
-                dots.image = alwaysEnable || enabledLevel > i - 1 ? #imageLiteral(resourceName: "dots") : #imageLiteral(resourceName: "dots copy")
-                if enabledLevel == i + 1 {
-                    contentOffset = dots.frame.origin
-                }
-            } else if enabledLevel == totalTrackCount {
-                contentOffset = button.frame.origin
-            }
+            button.isEnabled = true
         }
 
-        if (alwaysEnable) {
-            contentOffset = CGPoint(x:0, y:0)
-        }
-        
+        contentOffset = CGPoint(x:0, y:0)
         let bottomOffset = CGPoint(x:0, y:self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
         if (contentOffset.y > bottomOffset.y) {
             contentOffset = bottomOffset
@@ -118,21 +95,21 @@ class ViewController: UIViewController {
         scrollView.setContentOffset(contentOffset, animated: true)
     }
     
-    func runMeditation(trackLevel: Int, totalDurationSeconds: Int) {
+    func runMeditation(trackLevel: Int, noVoiceDurationSeconds: Int?) {
         let mvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MeditationViewController") as! MeditationViewController
         self.present(mvc, animated: true) {
         }
-        mvc.runMeditation(trackLevel: trackLevel, totalDurationSeconds: totalDurationSeconds)
+        mvc.runMeditation(trackLevel: trackLevel, noVoiceDurationSeconds: noVoiceDurationSeconds)
 
     }
     
-    fileprivate func presentInvalidCustomCountdownAlert(trackLevel: Int, minDurationMinutes: Int) {
-        let alert = UIAlertController(title: "Work Dilligently", message: "Length for this meditation must be at least \(minDurationMinutes) minutes.", preferredStyle: UIAlertController.Style.alert)
+    fileprivate func presentInvalidCustomCountdownAlert(trackLevel: Int) {
+        let alert = UIAlertController(title: "Work Dilligently", message: "Length for this meditation must be at least 1 minute.", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { action in
-            self.presentCustomCountdownAlert(trackLevel: trackLevel, minDurationMinutes: minDurationMinutes)
+            self.presentCustomCountdownAlert(trackLevel: trackLevel)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { action in
-            self.presentCustomCountdownAlert(trackLevel: trackLevel, minDurationMinutes: minDurationMinutes)
+            self.presentCustomCountdownAlert(trackLevel: trackLevel)
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -141,12 +118,11 @@ class ViewController: UIViewController {
         textField.text = ""
     }
     
-    fileprivate func presentCustomCountdownAlert(trackLevel: Int, minDurationMinutes: Int) {
+    fileprivate func presentCustomCountdownAlert(trackLevel: Int) {
         let alert2 = UIAlertController(title: "Meditate", message: "Enter a meditation length", preferredStyle: UIAlertController.Style.alert)
 
-        let defaultDurationMinutes = self.breathworkManager.user.customMeditationDurationMinutes > minDurationMinutes ? self.breathworkManager.user.customMeditationDurationMinutes : minDurationMinutes
+        let defaultDurationMinutes = self.breathworkManager.user.customMeditationDurationMinutes
         alert2.addTextField { (textField) in
-            textField.placeholder = "\(minDurationMinutes) minutes minimum"
             textField.text = String(defaultDurationMinutes)
             textField.keyboardType = .numberPad
             textField.addTarget(self, action: #selector(self.textFieldTouched), for: UIControl.Event.touchDown)
@@ -154,18 +130,14 @@ class ViewController: UIViewController {
         alert2.addAction(UIAlertAction(title: "Submit", style: UIAlertAction.Style.default, handler: { action in
             let value = alert2.textFields?[0].text
             guard value != nil else {
-                self.presentInvalidCustomCountdownAlert(trackLevel: trackLevel, minDurationMinutes: minDurationMinutes)
+                self.presentInvalidCustomCountdownAlert(trackLevel: trackLevel)
                 return
             }
             if let durationMinutes = Int(value!) {
-                if (minDurationMinutes > durationMinutes) {
-                    self.presentInvalidCustomCountdownAlert(trackLevel: trackLevel, minDurationMinutes: minDurationMinutes)
-                } else {
-                    self.breathworkManager.setDefaultDurationMinutes(durationMinutes: durationMinutes)
-                    self.runMeditation(trackLevel: trackLevel, totalDurationSeconds: durationMinutes * 60)
-                }
+                self.breathworkManager.setDefaultDurationMinutes(durationMinutes: durationMinutes)
+                self.runMeditation(trackLevel: trackLevel, noVoiceDurationSeconds: durationMinutes * 60)
             } else {
-                self.presentInvalidCustomCountdownAlert(trackLevel: trackLevel, minDurationMinutes: minDurationMinutes)
+                self.presentInvalidCustomCountdownAlert(trackLevel: trackLevel)
             }
         }))
         alert2.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { action in
@@ -173,38 +145,13 @@ class ViewController: UIViewController {
         self.present(alert2, animated: true, completion: nil)
     }
     
-    fileprivate func presentCountdownLengthAlert(_ trackLevel: Int) {
-        let trackTemplate = breathworkManager.trackTemplateFactory.trackTemplates[trackLevel]
-        let minDurationSeconds = trackTemplate.minimumDuration
-        let minDurationMinutes = minDurationSeconds / 60 + 2
-
-        if !trackTemplate.isMultiPart {
-            self.runMeditation(trackLevel: trackLevel, totalDurationSeconds: minDurationSeconds)
-        } else {
-            
-            let alert = UIAlertController(title: "Meditate", message: "Select a meditation length", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "\(minDurationMinutes) minutes (minimum)", style: UIAlertAction.Style.default, handler: { action in
-                self.runMeditation(trackLevel: trackLevel, totalDurationSeconds: minDurationMinutes * 60)
-            }))
-            alert.addAction(UIAlertAction(title: "45 minutes", style: UIAlertAction.Style.default, handler: { action in
-                self.runMeditation(trackLevel: trackLevel, totalDurationSeconds: 45 * 60)
-            }))
-            alert.addAction(UIAlertAction(title: "60 minutes (recommended)", style: UIAlertAction.Style.default, handler: { action in
-                self.runMeditation(trackLevel: trackLevel, totalDurationSeconds: 60 * 60)
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Custom Time", style: UIAlertAction.Style.default, handler: { action in
-                self.presentCustomCountdownAlert(trackLevel: trackLevel, minDurationMinutes: minDurationMinutes)
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { action in
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
     @objc func didTapMeditationButton(_ sender: UIButton) {
         let trackLevel = sender.tag
-        presentCountdownLengthAlert(trackLevel)
+        if (trackLevel == 0) {
+            presentCustomCountdownAlert(trackLevel: trackLevel)
+        } else {
+            self.runMeditation(trackLevel: trackLevel, noVoiceDurationSeconds: nil)
+        }
     }
     
     @IBAction func didTapInfoButton(_ sender: UIButton) {

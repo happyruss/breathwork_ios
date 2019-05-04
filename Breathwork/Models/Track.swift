@@ -22,17 +22,20 @@ class Track {
     
     fileprivate let trackTemplate: TrackTemplate
     
-    fileprivate let part1Item: AVPlayerItem
-    fileprivate let playerPart1: AVPlayer
-    fileprivate let gapDuration: Int
+    fileprivate let voiceItem: AVPlayerItem?
+    fileprivate let musicItem: AVPlayerItem?
+    fileprivate let breathItem: AVPlayerItem?
+    fileprivate let voicePlayer: AVPlayer?
+    fileprivate let musicPlayer: AVPlayer?
+    fileprivate let breathPlayer: AVQueuePlayer?
+    
     fileprivate let totalDuration: Int
-
-    fileprivate let part2Item: AVPlayerItem?
-    fileprivate let playerPart2: AVPlayer?
+    fileprivate let isTimerOnly: Bool
+    fileprivate let isIntroduction: Bool
     
     weak var delegate: TrackDelegate?
     
-    init(trackTemplate: TrackTemplate, gapDuration: Int?) {
+    init(trackTemplate: TrackTemplate, noVoiceDurationSeconds: Int?) {
         self.trackTemplate = trackTemplate
         
         //initialize the audio files
@@ -41,23 +44,63 @@ class Track {
             "hasProtectedContent"
         ]
 
-        self.part1Item = AVPlayerItem(asset: trackTemplate.part1Asset,
-                                 automaticallyLoadedAssetKeys: assetKeys)
-        self.playerPart1 = AVPlayer(playerItem: part1Item)
-
-        if (self.trackTemplate.isMultiPart) {
-            self.part2Item = AVPlayerItem(asset: trackTemplate.part2Asset!,
-                                     automaticallyLoadedAssetKeys: assetKeys)
-            self.playerPart2 = AVPlayer(playerItem: part2Item!)
-            self.gapDuration = gapDuration!
-            self.totalDuration = self.gapDuration + self.trackTemplate.part1Duration + self.trackTemplate.part2Duration!
+        if (trackTemplate.voiceAsset != nil) {
+            self.voiceItem = AVPlayerItem(asset: trackTemplate.voiceAsset!,
+                                          automaticallyLoadedAssetKeys: assetKeys)
+            self.voicePlayer = AVPlayer(playerItem: voiceItem)
         } else {
-            self.part2Item = nil;
-            self.playerPart2 = nil;
-            self.gapDuration = 0
-            self.totalDuration = self.trackTemplate.part1Duration
+            self.voiceItem = nil
+            self.voicePlayer = nil
         }
-        self.remainingTime = self.totalDuration;
+        
+        if (trackTemplate.musicAsset != nil) {
+            self.musicItem = AVPlayerItem(asset: trackTemplate.musicAsset!,
+                                           automaticallyLoadedAssetKeys: assetKeys)
+            self.musicPlayer = AVPlayer(playerItem: musicItem)
+        } else {
+            self.musicItem = nil
+            self.musicPlayer = nil
+        }
+        
+        if (trackTemplate.name == "Timer") {
+            self.remainingTime = noVoiceDurationSeconds!
+            self.totalDuration = noVoiceDurationSeconds!
+            self.isTimerOnly = true
+        } else {
+            self.remainingTime = trackTemplate.voiceDuration!
+            self.totalDuration = trackTemplate.voiceDuration!
+            self.isTimerOnly = false
+        }
+
+        if (trackTemplate.name != "Introduction") {
+            self.breathItem = AVPlayerItem(asset: trackTemplate.breathAsset,
+                                           automaticallyLoadedAssetKeys: assetKeys)
+            isIntroduction = false
+
+            // Seamless looping not available until iOS 10
+            if #available(iOS 10.0, *) {
+                self.breathPlayer = AVQueuePlayer()
+                _ = AVPlayerLayer(player: self.breathPlayer)
+                _ = AVPlayerLooper(player: self.breathPlayer!, templateItem: self.breathItem!)
+            } else {
+                self.breathPlayer = AVQueuePlayer(playerItem: breathItem)
+                self.breathPlayer!.actionAtItemEnd = .none
+                NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(playerItemDidReachEnd(notification:)),
+                                                       name: .AVPlayerItemDidPlayToEndTime,
+                                                       object: self.breathPlayer!.currentItem)
+            }
+        } else {
+            self.breathItem = nil
+            self.breathPlayer = nil
+            isIntroduction = true
+        }
+    }
+    
+    @objc func playerItemDidReachEnd(notification: Notification) {
+        if let playerItem = notification.object as? AVPlayerItem {
+            playerItem.seek(to: CMTimeMake(value:5, timescale:100))
+        }
     }
     
     @objc func update() {
@@ -65,31 +108,33 @@ class Track {
         delegate?.trackTimeRemainingUpdated(timeRemaining: self.remainingTime)
         
         guard self.remainingTime > 0 else {
+            if (isTimerOnly) {
+                self.breathPlayer!.pause()
+            }
             timer.invalidate()
             delegate?.trackEnded()
             return
         }
 
-        if (self.totalDuration - self.remainingTime < self.trackTemplate.part1Duration) {
-            if (self.playerPart1.rate != 0 && self.playerPart1.error == nil) {
-            } else {
-                self.playerPart1.play()
-            }
-        }
-        
-        guard self.remainingTime > 0 else {
-            return
-        }
-        guard self.trackTemplate.isMultiPart else {
-            return
-        }
-        guard self.remainingTime < (self.trackTemplate.part2Duration! - 5) else {
+        if (isTimerOnly) {
+            self.breathPlayer!.play()
             return
         }
         
-        if (self.playerPart2!.rate != 0 && self.playerPart2!.error == nil) {
+        if (isIntroduction) {
+            self.voicePlayer!.play()
+            return
+        }
+        
+        // assume all 3 pieces are not null
+        self.voicePlayer!.play()
+        self.musicPlayer!.play()
+
+        let currentPosition = self.totalDuration - self.remainingTime
+        if (currentPosition > trackTemplate.breathStartSeconds! && currentPosition < trackTemplate.breathStopSeconds!) {
+            self.breathPlayer!.play()
         } else {
-            self.playerPart2?.play()
+            self.breathPlayer!.pause()
         }
     }
     
@@ -117,19 +162,25 @@ class Track {
         setupAudio()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
         self.isPaused = false
-        self.playerPart1.play()
+        if (self.voicePlayer != nil) {
+            self.voicePlayer!.play()
+        }
+        if (self.musicPlayer != nil) {
+            self.musicPlayer!.play()
+        }
     }
     
     func pause() {
         timer.invalidate()
         self.isPaused = true
-        if (self.playerPart1.rate != 0 && self.playerPart1.error == nil) {
-            self.playerPart1.pause()
+        if (self.voicePlayer != nil && self.voicePlayer!.rate != 0 && self.voicePlayer!.error == nil) {
+            self.voicePlayer!.pause()
         }
-        if (self.trackTemplate.isMultiPart) {
-            if (self.playerPart2?.rate != 0 && self.playerPart2?.error == nil) {
-                self.playerPart2!.pause()
-            }
+        if (self.musicPlayer != nil && self.musicPlayer!.rate != 0 && self.musicPlayer!.error == nil) {
+            self.musicPlayer!.pause()
+        }
+        if (self.breathPlayer != nil && self.breathPlayer!.rate != 0 && self.breathPlayer!.error == nil) {
+            self.breathPlayer!.pause()
         }
     }
     
@@ -153,8 +204,3 @@ class Track {
     }
     
 }
-
-// Helper function inserted by Swift 4.2 migrator.
-//fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
-//    return input.rawValue
-//}

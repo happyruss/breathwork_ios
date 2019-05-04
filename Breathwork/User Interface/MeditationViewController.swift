@@ -32,7 +32,6 @@ class MeditationViewController: UIViewController, TrackDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         playPauseButton.isHidden = true
-        self.appNameLabel.text = trackTemplateFactory.appName
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,11 +39,10 @@ class MeditationViewController: UIViewController, TrackDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func runMeditation(trackLevel: Int, totalDurationSeconds: Int) {
+    func runMeditation(trackLevel: Int, noVoiceDurationSeconds: Int?) {
         let trackTemplate = breathworkManager.trackTemplateFactory.trackTemplates[trackLevel]
-        let gapDuration = totalDurationSeconds - trackTemplate.minimumDuration
         meditationNameLabel.text = trackTemplate.name
-        breathworkManager.playTrackAtLevel(trackLevel: trackLevel, gapDuration: gapDuration)
+        breathworkManager.playTrackAtLevel(trackLevel: trackLevel, noVoiceDurationSeconds: noVoiceDurationSeconds)
         breathworkManager.activeTrack?.delegate = self
         playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: UIControl.State.normal)
         playPauseButton.isHidden = false

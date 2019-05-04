@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		460477E8227DF14300C89494 /* 02-process-loss-6.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 460477DE227DF14300C89494 /* 02-process-loss-6.m4a */; };
 		460477E9227DF14300C89494 /* 03-sex-healing-music.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 460477DF227DF14300C89494 /* 03-sex-healing-music.m4a */; };
 		460477EA227DF14300C89494 /* 01-stepIntoPower-voice.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 460477E0227DF14300C89494 /* 01-stepIntoPower-voice.m4a */; };
 		460477EB227DF14300C89494 /* BreathLoop.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 460477E1227DF14300C89494 /* BreathLoop.m4a */; };
@@ -54,7 +53,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		460477DE227DF14300C89494 /* 02-process-loss-6.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "02-process-loss-6.m4a"; sourceTree = "<group>"; };
 		460477DF227DF14300C89494 /* 03-sex-healing-music.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "03-sex-healing-music.m4a"; sourceTree = "<group>"; };
 		460477E0227DF14300C89494 /* 01-stepIntoPower-voice.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "01-stepIntoPower-voice.m4a"; sourceTree = "<group>"; };
 		460477E1227DF14300C89494 /* BreathLoop.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = BreathLoop.m4a; sourceTree = "<group>"; };
@@ -138,7 +136,6 @@
 			children = (
 				460477E4227DF14300C89494 /* 01-stepIntoPower-music.m4a */,
 				460477E0227DF14300C89494 /* 01-stepIntoPower-voice.m4a */,
-				460477DE227DF14300C89494 /* 02-process-loss-6.m4a */,
 				460477E3227DF14300C89494 /* 02-process-loss-music.m4a */,
 				460477E2227DF14300C89494 /* 02-process-loss-voice.m4a */,
 				460477DF227DF14300C89494 /* 03-sex-healing-music.m4a */,
@@ -336,7 +333,6 @@
 				46C1BCE920164ACD00824ECE /* SF-Pro-Text-Semibold.otf in Resources */,
 				46E6CB501FE6EA3200F09C38 /* Assets.xcassets in Resources */,
 				460477E9227DF14300C89494 /* 03-sex-healing-music.m4a in Resources */,
-				460477E8227DF14300C89494 /* 02-process-loss-6.m4a in Resources */,
 				46E6CB4E1FE6EA3200F09C38 /* Main.storyboard in Resources */,
 				46DA82672015165E00BA875D /* FONT-DINER-Coffee-Service.otf in Resources */,
 				460477EA227DF14300C89494 /* 01-stepIntoPower-voice.m4a in Resources */,

@@ -9,8 +9,10 @@
 import Foundation
 
 class User {
-    
-    var completedTrackLevel = 0
+    var savedBreathVolume = 0.5
+    var savedBreathSpeed = 0.5
+    var savedVoiceVolume = 0.5
+    var savedMusicVolume = 0.5
     var customMeditationDurationMinutes = 45
     var totalSecondsInMeditation = 0
 }
