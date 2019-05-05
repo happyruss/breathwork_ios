@@ -31,7 +31,7 @@ class ViewController: UIViewController {
             let trackTemplate = trackTemplateFactory.trackTemplates[i]
             let button = BreathworkButton()
             button.tag = i
-            button.setTitle(trackTemplate.name, for: .normal)
+            button.setTitle(trackTemplate.shortName, for: .normal)
             button.addTarget(self, action: #selector(self.didTapMeditationButton(_:)), for: .touchUpInside)
             stackView.addArrangedSubview(button)
             button.sizeToFit()

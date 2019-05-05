@@ -12,6 +12,7 @@ import AVKit
 class TrackTemplate {
     
     let name: String
+    let shortName: String
     let voiceAsset: AVAsset?
     let musicAsset: AVAsset?
     let breathAsset: AVAsset
@@ -19,8 +20,9 @@ class TrackTemplate {
     let breathStartSeconds: Int?
     let breathStopSeconds: Int?
     
-    init(name: String, voiceUrl: URL? = nil, musicUrl: URL? = nil, breathStartSeconds: Int? = nil, breathStopSeconds: Int? = nil) {
+    init(name: String, shortName: String, voiceUrl: URL? = nil, musicUrl: URL? = nil, breathStartSeconds: Int? = nil, breathStopSeconds: Int? = nil) {
         self.name = name
+        self.shortName = shortName
         self.breathStartSeconds = breathStartSeconds
         self.breathStopSeconds = breathStopSeconds
         
