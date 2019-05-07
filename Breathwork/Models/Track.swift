@@ -76,23 +76,22 @@ class Track {
         }
 
         if (trackTemplate.name != "Introduction") {
-            self.breathItem = AVPlayerItem(asset: trackTemplate.breathAsset,
-                                           automaticallyLoadedAssetKeys: assetKeys)
+            self.breathItem = AVPlayerItem(asset: trackTemplate.breathAsset)
             isIntroduction = false
 
             // Seamless looping not available until iOS 10
-            if #available(iOS 10.0, *) {
-                self.breathPlayer = AVQueuePlayer()
-                _ = AVPlayerLayer(player: self.breathPlayer)
-                _ = AVPlayerLooper(player: self.breathPlayer!, templateItem: self.breathItem!)
-            } else {
+            // but i cant get this to work anyway
+//            if #available(iOS 10.0, *) {
+//                self.breathPlayer = AVQueuePlayer(items: [breathItem!])
+//              _ = AVPlayerLooper(player: self.breathPlayer!, templateItem: self.breathItem!)
+//            } else {
                 self.breathPlayer = AVQueuePlayer(playerItem: breathItem)
                 self.breathPlayer!.actionAtItemEnd = .none
                 NotificationCenter.default.addObserver(self,
                                                        selector: #selector(playerItemDidReachEnd(notification:)),
                                                        name: .AVPlayerItemDidPlayToEndTime,
                                                        object: self.breathPlayer!.currentItem)
-            }
+//            }
             setBreathVolume(breathVolume)
         } else {
             self.breathItem = nil

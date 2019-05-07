@@ -17,6 +17,7 @@ class TrackTemplate {
     let musicAsset: AVAsset?
     let breathAsset: AVAsset
     let voiceDuration: Int?
+    let breathDuration: Float64
     let breathStartSeconds: Int?
     let breathStopSeconds: Int?
     
@@ -41,5 +42,6 @@ class TrackTemplate {
         }
         
         self.breathAsset = AVAsset(url: URL(fileURLWithPath: Bundle.main.path(forResource: "BreathLoop", ofType: "m4a")!))
+        self.breathDuration = CMTimeGetSeconds(self.breathAsset.duration)
     }
 }
