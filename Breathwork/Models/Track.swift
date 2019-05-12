@@ -219,6 +219,7 @@ class Track {
         if (!isTimerOnly) {
             shouldBePlaying = currentPosition > trackTemplate.breathStartSeconds! && currentPosition < trackTemplate.breathStopSeconds!
         }
+        shouldBePlaying = shouldBePlaying && !self.isPaused
         if (shouldBePlaying) {
             //      formula to convert scale
             //      ((Input - InputLow) / (InputHigh - InputLow)) * (OutputHigh - OutputLow) + OutputLow;
