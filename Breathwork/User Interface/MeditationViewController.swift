@@ -143,14 +143,18 @@ class MeditationViewController: UIViewController, TrackDelegate {
     
     func trackTimeRemainingUpdated(timeRemaining: Int) {
         breathworkManager.incrementTotalSecondsInMeditation()
-        countdownLabel.text = String(format: "%d", arguments: [(timeRemaining / 60)]) + ":" + String(format: "%02d", arguments: [((timeRemaining % 3600) % 60)])
+        DispatchQueue.main.async {
+            self.countdownLabel.text = String(format: "%d", arguments: [(timeRemaining / 60)]) + ":" + String(format: "%02d", arguments: [((timeRemaining % 3600) % 60)])
+        }
     }
     
     func trackEnded() {
         breathworkManager.userCompletedTrack()
-        playPauseButton.isHidden = true
+        DispatchQueue.main.async {
+            self.playPauseButton.isHidden = true
+            self.goBackToMainScreen()
+        }
         isInMeditation = false
-        self.goBackToMainScreen()
     }
 }
 
